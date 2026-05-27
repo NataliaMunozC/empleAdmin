@@ -1,0 +1,19 @@
+{
+  "name": "emple-admin",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "app",
+    "api"
+  ],
+  "scripts": {
+    "dev": "concurrently -n app,api -c cyan,magenta \"npm run dev -w app\" \"npm run dev -w api\"",
+    "build": "npm run build -w app && npm run build -w api",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "supabase:gen": "npm run supabase:gen -w api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
