@@ -27,6 +27,64 @@ TDD Progress:
 - [ ] Paso 5: Verificar cobertura de casos de uso
 ```
 
+## Contexto de tests en este proyecto
+
+### Dónde están los tests
+
+- Frontend (`app`): `app/src/**/*.test.tsx`
+- Backend (`api`): `api/src/**/*.test.ts`
+- Configuración frontend: `app/vite.config.ts` (Vitest + jsdom)
+- Configuración backend: `api/vitest.config.ts` (Vitest + node)
+
+### Cómo se implementan
+
+#### Frontend (`app`)
+
+- Framework de tests: Vitest.
+- Utilidades: `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`.
+- Patrón recomendado:
+  1. Renderizar componente con `render(...)`.
+  2. Consultar UI con `screen.getBy...`/`findBy...`.
+  3. Simular interacción de usuario con `userEvent`.
+  4. Verificar resultado visible para el usuario (texto, estado, accesibilidad), no detalles internos.
+
+#### Backend (`api`)
+
+- Framework de tests: Vitest.
+- HTTP testing: Supertest.
+- Patrón recomendado:
+  1. Importar `createApp()` desde `api/src/app.ts`.
+  2. Probar endpoints con `request(app).get/post/...`.
+  3. Verificar `statusCode`, payload y mensajes de error relevantes.
+  4. Evitar arrancar `listen()` en tests unitarios.
+
+### Comandos de ejecución y verificación
+
+Desde la raíz del workspace:
+
+- Ejecutar todo: `npm run test`
+- Ejecutar solo frontend: `npm run test -w app`
+- Ejecutar solo backend: `npm run test -w api`
+- Modo watch frontend: `npm run test:watch -w app`
+- Modo watch backend: `npm run test:watch -w api`
+
+## Secuencia de verificación obligatoria (RED -> GREEN -> REFACTOR)
+
+1. **RED**:
+   - Crear/ajustar tests primero.
+   - Ejecutar test(s) afectados (`npm run test -w app` o `npm run test -w api`).
+   - Confirmar fallo por la razón correcta.
+2. **GREEN**:
+   - Implementar mínimo para cumplir criterio.
+   - Re-ejecutar test(s) afectados.
+3. **REFACTOR**:
+   - Mejorar estructura sin alterar comportamiento.
+   - Re-ejecutar test(s) del scope.
+4. **Verificación final**:
+   - Ejecutar `npm run test` en raíz.
+   - Reportar evidencia de salida y matriz criterio -> test.
+   - Delegar SIEMPRE validación final al subagente `qa-engineer` con casos de prueba explícitos y esperar su reporte.
+
 ### Paso 1: Definir casos de uso
 
 Antes de tocar código, documenta:
