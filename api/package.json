@@ -10,7 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "echo \"No lint configured in api yet\"",
-    "supabase:gen": "echo \"Define migrations and replace this command to generate Supabase types\""
+    "supabase:gen": "supabase gen types typescript --local --schema public > src/database.types.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
